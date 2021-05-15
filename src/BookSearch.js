@@ -10,46 +10,49 @@ class BookSearch extends Component {
     	super(props);
       
       	this.state = {
-        	searchText: '',
-          	results: []
+          results: []
         }
       
-      	this.handleChange = this.handleChange.bind(this);
+      	this.handleSearchChange = this.handleSearchChange.bind(this);
     }
   
-  	handleChange = event => {
-      	event.preventDefault();
-      
-      	const { searchText } = this.state;
-      	const { books } = this.props
-      
-    	this.setState({ searchText: event.target.value }, () => {
-        		BooksAPI.search(searchText.trim())
-                    .then(results => {
-                        this.setState({
-                          results: 	results.map(result => {
-                            			result.shelf = "none"
-                
-                                        books.forEach(book => {
-                                            if (book.id === result.id) {
-                                              result.shelf = book.shelf
-                                            }
-                                        })
-                            			
-                            			return result
-                                  	})
-                        });
-                    })
-                    .catch(err => {
-                  		console.log(err)
-                	});
-		})
+  	handleSearchChange = event => {
+      event.preventDefault();
+
+      const searchText = event.target.value
+      const { books } = this.props
+
+      if (searchText != '') {
+        BooksAPI.search(searchText, 20)
+          .then(results => {
+              this.setState({
+                  results:  results.map(result => 
+                              {
+                                  result.shelf = "none"
+              
+                                  books.forEach(book => {
+                                      if (book.id === result.id) result.shelf = book.shelf
+                                  })
+                                
+                                  return result
+                              }
+                  )
+              });
+          })
+          .catch(err => {
+              console.log(err)
+
+              this.setState({
+                results:  []
+              });
+          });
+        }
     }
 
-	render() {
-      	const { handleChange } = this;
-		const { onSelection } = this.props;
-		const { results } = this.state;
+	  render() {
+      const { handleSearchChange } = this;
+      const { onSelection } = this.props;
+      const { results } = this.state;
 
     	return (
           	<div className="search-books">
@@ -64,19 +67,19 @@ class BookSearch extends Component {
                     However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                     you don't find a specific author or title. Every search is limited by search terms.
                   */}
-                  <input type="text" onChange={handleChange} placeholder="Search by title or author"/>
+                  <input type="text" onChange={handleSearchChange} placeholder="Search by title or author"/>
                 </div>
               </div>
               <div className="search-books-results">
                 <ol className="books-grid">
-					{
-                    	results.map(result => {
+					          {
+                    	results.map((result, index) => {
                       		return (
-                      			<li><Book onSelection={onSelection} book={result} key={result.id}/></li>
+                      			<li><Book onSelection={onSelection} book={result} key={index}/></li>
                       		)
                     	})
                     }
-				</ol>
+				        </ol>
               </div>
             </div>
         )

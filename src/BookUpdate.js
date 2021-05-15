@@ -1,52 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
-import * as BooksAPI from './BooksAPI';
 
-class BookUpdate extends Component {
-    constructor(props) {
-      super(props);
-      
-      this.state = {
-      	shelf: ''
-      }
-      
-      this.handleChange = this.handleChange.bind(this);
-    }
+const BookUpdate = ({ onSelection, book }) => {
   
-  	componentDidMount() {
-    	const { shelf } = this.props;
-      
-      	this.setState({ shelf })
-    }
-  
-  	handleChange = event => {
+  	const handleShelfChange = event => {
       	event.preventDefault();
+
+        const shelf = event.target.value
       
-      	const { book, onSelection } = this.props
-      	
-      	this.setState({ shelf: event.target.value }, () => {
-    		BooksAPI.update(book, this.state.shelf)
-        })
-      
-      	onSelection(book, event.target.value)
+      	onSelection(book, shelf)
     }
 
-  	render() {
-      const { handleChange } = this;
-	  const { shelf } = this.state;
-		
-      return (
-        <div className="book-shelf-changer">
-          <select onChange={handleChange} value={shelf}>
-            <option value="move" disabled>Move to...</option>
-			<option value="currentlyReading">Currently Reading</option>
-			<option value="wantToRead">Want to Read</option>
-			<option value="read">Read</option>
-			<option value="none">None</option>
-          </select>
-        </div>
-      )
-    }
+  	return (
+      <div className="book-shelf-changer">
+        <select onChange={handleShelfChange} value={book.shelf}>
+          <option value="move" disabled>Move to...</option>
+          <option value="currentlyReading">Currently Reading</option>
+          <option value="wantToRead">Want to Read</option>
+          <option value="read">Read</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+    )
 }
 
 export default BookUpdate;
