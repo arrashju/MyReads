@@ -52,9 +52,23 @@ class BookSearch extends Component {
         }
     }
 
+    handleShelfChange = (result, shelf) => {
+      const { results } = this.state
+      
+      result.shelf = shelf
+
+      this.setState({ results:
+          results.map(r => {
+              if (r.id === result.id) r.shelf = result.shelf
+              return r
+          })
+      })
+
+      BooksAPI.update(result, shelf)
+    }
+
 	  render() {
-      const { handleSearchChange } = this;
-      const { onSelection } = this.props;
+      const { handleSearchChange, handleShelfChange } = this;
       const { results, searchText } = this.state;
 
     	return (
@@ -78,7 +92,7 @@ class BookSearch extends Component {
 					          {
                     	results.map((result, index) => {
                       		return (
-                      			<li><Book onSelection={onSelection} book={result} key={index}/></li>
+                      			<li><Book onSelection={handleShelfChange} book={result} key={index}/></li>
                       		)
                     	})
                     }
