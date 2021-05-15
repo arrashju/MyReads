@@ -53,8 +53,6 @@ class BooksApp extends Component {
           })
       })
     )
-
-    BooksAPI.update(book, shelf)
   }
   
   render() {
@@ -66,7 +64,9 @@ class BooksApp extends Component {
     return (
       	<div className="app">
       	  <Route exact path="/" component={() => <Library books={books} onSelection={handleShelfChange}/>} />
-		      <Route path="/search" component={() => <BookSearch books={books} onSelection={handleShelfChange}/>} />
+		      <Route path="/search">
+            <BookSearch books={books} onSelection={handleShelfChange}/>
+          </Route>
         </div>
     )
   }
