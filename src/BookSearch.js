@@ -64,7 +64,9 @@ class BookSearch extends Component {
           })
       })
 
-      BooksAPI.update(result, shelf)
+      const { onSelection } = this.props
+
+      onSelection(result, shelf)
     }
 
 	  render() {
