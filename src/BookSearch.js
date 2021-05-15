@@ -10,7 +10,8 @@ class BookSearch extends Component {
     	super(props);
       
       	this.state = {
-          results: []
+          results: [],
+          searchText: ''
         }
       
       	this.handleSearchChange = this.handleSearchChange.bind(this);
@@ -19,11 +20,13 @@ class BookSearch extends Component {
   	handleSearchChange = event => {
       event.preventDefault();
 
-      const searchText = event.target.value
       const { books } = this.props
+      const { searchText } = this.state
 
-      if (searchText != '') {
-        BooksAPI.search(searchText, 20)
+      this.setState({ searchText: event.target.value })
+
+      if (searchText !== '') {
+        BooksAPI.search(event.target.value, 20)
           .then(results => {
               this.setState({
                   results:  results.map(result => 
@@ -43,7 +46,7 @@ class BookSearch extends Component {
               console.log(err)
 
               this.setState({
-                results:  []
+                results: []
               });
           });
         }
@@ -52,7 +55,7 @@ class BookSearch extends Component {
 	  render() {
       const { handleSearchChange } = this;
       const { onSelection } = this.props;
-      const { results } = this.state;
+      const { results, searchText } = this.state;
 
     	return (
           	<div className="search-books">
@@ -67,7 +70,7 @@ class BookSearch extends Component {
                     However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                     you don't find a specific author or title. Every search is limited by search terms.
                   */}
-                  <input type="text" onChange={handleSearchChange} placeholder="Search by title or author"/>
+                  <input type="text" onChange={handleSearchChange} value={searchText} placeholder="Search by title or author"/>
                 </div>
               </div>
               <div className="search-books-results">

@@ -4,12 +4,14 @@ import './App.css'
 
 const Book = ({ onSelection, book }) => {
 	const { title, author, imageLinks } = book;
-	const { smallThumbnail } = imageLinks;
+	const { smallThumbnail } = imageLinks || { smallThumbnail: '' };
       	
 	return (
 		<div className="book">
 			<div className="book-top">
-				<div className="book-cover" style={{ width: 128, height: 193, background: `#ddd ${smallThumbnail ? `url(${smallThumbnail})` : ''} no-repeat` }}></div>
+				<div
+					className="book-cover"
+					style={{ width: 128, height: 193, backgroundImage: `url(${smallThumbnail})`, backgroundRepeat: 'no-repeat', backgroundColor: '#ddd'}}></div>
 				<BookUpdate onSelection={onSelection} book={book}/>
 			</div>
 			<div className="book-title">{title}</div>
