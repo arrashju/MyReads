@@ -37,23 +37,22 @@ class BooksApp extends Component {
 
     if (shelf === 'none') {
       this.setState({ books: books.filter(b => b.id !== book.id) })
-    } else {
-      const ids = books.map(b => b.id)
 
-      if (!ids.includes(book.id)) {
-        this.setState({ books: books.concat(book) })
-      } else (
-        this.setState({ books:
-            books.map(b => {
-              if (b.id === book.id) b.shelf = book.shelf
-              return b
-            })
-        })
-      )
+      return
     }
 
-    
-    BooksAPI.update(book, shelf)
+    const ids = books.map(b => b.id)
+
+    if (!ids.includes(book.id)) {
+      this.setState({ books: books.concat(book) })
+    } else (
+      this.setState({ books:
+          books.map(b => {
+            if (b.id === book.id) b.shelf = book.shelf
+            return b
+          })
+      })
+    )
   }
   
   render() {
