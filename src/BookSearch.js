@@ -50,7 +50,11 @@ class BookSearch extends Component {
                 results: []
               });
           });
-        }
+      } else {
+        this.setState({
+          results: []
+        });
+      }
     }
 
     handleShelfChange = (result, shelf) => {
