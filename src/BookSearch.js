@@ -27,8 +27,6 @@ class BookSearch extends Component {
       if (event.target.value !== '') {
         BooksAPI.search(event.target.value, 20)
           .then(results => {
-
-              console.log(results)
               this.setState({
                   results:  results.map(result => 
                               {
@@ -99,7 +97,7 @@ class BookSearch extends Component {
 					          {
                     	results.map((result, index) => {
                       		return (
-                      			<li><Book onSelection={handleShelfChange} book={result} key={index}/></li>
+                      			<li key={index}><Book onSelection={handleShelfChange} book={result} key={index}/></li>
                       		)
                     	})
                     }
