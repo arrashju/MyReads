@@ -21,13 +21,14 @@ class BookSearch extends Component {
       event.preventDefault();
 
       const { books } = this.props
-      const { searchText } = this.state
 
       this.setState({ searchText: event.target.value })
 
-      if (searchText !== '') {
+      if (event.target.value !== '') {
         BooksAPI.search(event.target.value, 20)
           .then(results => {
+
+              console.log(results)
               this.setState({
                   results:  results.map(result => 
                               {
